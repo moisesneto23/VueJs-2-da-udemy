@@ -20,9 +20,9 @@
       </thead>
       <tbody>
         <tr v-for="(aluno, index) in alunos" :key="index">
-          <td>{{ aluno.matricula + 3 }}</td>
+          <td>{{ aluno.id}}</td>
           <td>{{ aluno.nome }}</td>
-          <td><button class="btn" @click="remover">remover</button></td>
+          <td><button class="btn" @click="remover(aluno)">remover</button></td>
         </tr>
       </tbody>
       <tfoot v-if="!alunos.length">
@@ -53,9 +53,13 @@ export default {
 
   },
   methods: {
-    remover() {
-      let indice = this.alunos.indexOf(this.aluno);
-      this.alunos.splice(indice, 1);
+    remover(aluno) {
+      this.$http
+      .delete(`http://localhost:3000/alunos/${aluno.id}`).then(()=>{
+          let indice = this.alunos.indexOf(aluno);
+        this.alunos.splice(indice, 1)
+      })
+      
     },
     addAlunos() {
       let _aluno = {
